@@ -1,222 +1,844 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Verbas Rescisórias</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Calculadora de Verbas Rescisórias — Conheça seus Direitos</title>
+<meta name="description" content="Calcule suas verbas rescisórias gratuitamente: aviso prévio, FGTS, férias e mais. Ferramenta gratuita da Super Inteligênc[IA]."/>
+<meta property="og:title" content="Calculadora de Verbas Rescisórias Trabalhistas"/>
+<meta property="og:description" content="Calcule seus direitos trabalhistas em segundos. Grátis."/>
+<meta property="og:image" content="og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="theme-color" content="#030409"/>
+<meta name="author" content="Super Inteligênc[IA] — Marcílio Drummond"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#ffffff;--bg-secondary:#f7f7f5;--bg-info:#eef4fd;
-  --text-primary:#1a1a18;--text-secondary:#5a5a56;--text-tertiary:#9a9a94;
-  --text-success:#1a6b3a;--text-danger:#a32d2d;--text-info:#185fa5;
-  --border-light:rgba(0,0,0,0.1);--border-med:rgba(0,0,0,0.18);
-  --border-success:rgba(26,107,58,0.4);--border-info:rgba(24,95,165,0.4);
-  --radius-md:8px;--radius-lg:12px;
+  --c-black:#030409;--c-char:#282A32;--c-char2:#1a1c24;--c-char3:#32343e;
+  --c-gold:#e2c074;--c-gold2:#c9a456;--c-gold3:rgba(226,192,116,.12);--c-gold4:rgba(226,192,116,.06);
+  --c-white:#fff;--c-body:rgba(255,255,255,.78);--c-muted:rgba(255,255,255,.42);
+  --c-border:rgba(226,192,116,.18);--c-border2:rgba(255,255,255,.07);
+  --c-green:#5eead4;--c-red:#fca5a5;--c-blue:#93c5fd;
+  --f-d:'Sora',sans-serif;--f-b:'DM Sans',sans-serif;--f-m:'JetBrains Mono',monospace;
+  --ease-out:cubic-bezier(.22,1,.36,1);
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#1c1c1a;--bg-secondary:#262622;--bg-info:#0c2a45;
-    --text-primary:#f0f0ec;--text-secondary:#9a9a94;--text-tertiary:#6a6a64;
-    --text-success:#5ecf87;--text-danger:#f09595;--text-info:#85b7eb;
-    --border-light:rgba(255,255,255,0.1);--border-med:rgba(255,255,255,0.18);
-    --border-success:rgba(94,207,135,0.35);--border-info:rgba(133,183,235,0.35);
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--c-black);color:var(--c-body);font-family:var(--f-b);font-size:15px;line-height:1.65;position:relative}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 50% at 15% 10%,rgba(226,192,116,.045) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 85% 80%,rgba(226,192,116,.03) 0%,transparent 60%)}
+#prog{position:fixed;top:0;left:0;height:2px;z-index:999;background:linear-gradient(90deg,var(--c-gold),var(--c-gold2));width:0%;box-shadow:0 0 12px rgba(226,192,116,.5)}
+.wrap{max-width:960px;margin:0 auto;padding:0 clamp(16px,4vw,32px);position:relative;z-index:1}
+.gold{color:var(--c-gold)}
+
+/* NAV */
+.main-nav{position:sticky;top:0;z-index:900;background:rgba(3,4,9,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--c-border2)}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 clamp(16px,4vw,32px);display:flex;align-items:center;justify-content:space-between;height:56px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{border-radius:6px;width:28px;height:28px}
+.nav-logo span{font-family:var(--f-d);font-weight:700;font-size:13px;color:var(--c-gold);letter-spacing:.01em}
+.nav-links{display:flex;gap:4px}
+.nav-links a{font-family:var(--f-m);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--c-muted);text-decoration:none;padding:6px 10px;border-radius:6px;transition:all .2s}
+.nav-links a:hover{color:var(--c-gold);background:var(--c-gold4)}
+.nav-toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:8px}
+.nav-toggle span{width:20px;height:1.5px;background:var(--c-muted);display:block;transition:all .2s}
+@media(max-width:700px){
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(3,4,9,.97);backdrop-filter:blur(18px);flex-direction:column;padding:12px 20px;border-bottom:1px solid var(--c-border2)}
+  .nav-links.open{display:flex}
+  .nav-toggle{display:flex}
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;padding:2rem 1rem}
-.container{max-width:640px;margin:0 auto}
-h1{font-size:20px;font-weight:600;margin-bottom:.25rem;color:var(--text-primary)}
-.subtitle{font-size:13px;color:var(--text-tertiary);margin-bottom:2rem}
-.section-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:.75rem}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.field label{font-size:13px;color:var(--text-secondary)}
-.field input,.field select{width:100%;height:36px;padding:0 10px;border:0.5px solid var(--border-light);border-radius:var(--radius-md);background:var(--bg);color:var(--text-primary);font-size:14px;font-family:inherit}
-.field input:focus,.field select:focus{outline:none;border-color:var(--border-med)}
-.divider{height:0.5px;background:var(--border-light);margin:1.5rem 0}
-.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.results-title{font-size:15px;font-weight:500;color:var(--text-primary)}
-.copy-btn{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-med);border-radius:var(--radius-md);background:transparent;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:background .15s}
-.copy-btn:hover{background:var(--bg-secondary)}
-.copy-btn.copied{color:var(--text-success);border-color:var(--border-success)}
-.result-rows{display:flex;flex-direction:column;gap:1px;border:0.5px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--bg)}
-.result-row:nth-child(even){background:var(--bg-secondary)}
-.result-row.total{background:var(--bg-secondary);border-top:0.5px solid var(--border-light)}
-.row-label{font-size:13px;color:var(--text-secondary)}
-.row-val{font-size:14px;font-weight:500;color:var(--text-primary);font-variant-numeric:tabular-nums}
-.row-val.neg{color:var(--text-danger)}
-.total .row-label{font-size:14px;font-weight:500;color:var(--text-primary)}
-.total .row-val{font-size:16px;color:var(--text-success)}
-.deduction-section{margin-top:8px}
-.deduction-toggle{font-size:12px;color:var(--text-tertiary);cursor:pointer;padding:8px 14px;display:block;border:0.5px solid var(--border-light);border-radius:var(--radius-md);background:transparent;width:100%;text-align:left;font-family:inherit}
-.deduction-toggle:hover{background:var(--bg-secondary)}
-.deduction-rows{border:0.5px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden;margin-top:6px}
-.info-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
-.chip{font-size:11px;padding:3px 10px;border-radius:999px;border:0.5px solid var(--border-light);color:var(--text-tertiary);background:var(--bg-secondary)}
-.chip.active{border-color:var(--border-info);color:var(--text-info);background:var(--bg-info)}
-.aviso-info{font-size:12px;color:var(--text-tertiary);margin-bottom:12px;padding:0 2px}
-.footer{margin-top:2rem;font-size:11px;color:var(--text-tertiary);text-align:center}
+
+/* HERO */
+.hero{padding:clamp(64px,10vw,100px) 0 clamp(48px,7vw,72px);text-align:center}
+.hero-badge{display:inline-block;font-family:var(--f-m);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-gold);border:1px solid var(--c-border);border-radius:8px;padding:6px 16px;margin-bottom:28px;background:var(--c-gold4)}
+.hero h1{font-family:var(--f-d);font-size:clamp(32px,6vw,58px);font-weight:800;color:var(--c-white);line-height:1.12;margin-bottom:20px}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--c-muted);max-width:600px;margin:0 auto 36px;line-height:1.6}
+.hero-stats{display:flex;justify-content:center;gap:clamp(16px,4vw,48px);margin-bottom:36px;flex-wrap:wrap}
+.h-stat-val{font-family:var(--f-d);font-size:clamp(20px,3vw,28px);font-weight:700;color:var(--c-gold)}
+.h-stat-label{font-family:var(--f-m);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--c-muted);margin-top:2px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--c-gold);color:var(--c-black);font-family:var(--f-d);font-weight:700;font-size:14px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--c-gold2);transform:translateY(-1px)}
+.btn-lg{padding:16px 36px;font-size:15px;border-radius:12px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--c-gold);font-family:var(--f-d);font-weight:600;font-size:13px;padding:11px 22px;border-radius:10px;text-decoration:none;border:1px solid var(--c-border);transition:all .2s;cursor:pointer}
+.btn-outline:hover{background:var(--c-gold4);transform:translateY(-1px)}
+
+/* SECTIONS */
+.sec-header{padding:clamp(48px,6vw,72px) 0 0}
+.sec-sup{font-family:var(--f-m);font-size:10px;font-weight:700;color:var(--c-gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.sec-sup::after{content:'';flex:0 0 36px;height:1px;background:var(--c-gold);opacity:.5}
+.sec-header h2{font-family:var(--f-d);font-size:clamp(22px,4vw,34px);font-weight:700;color:var(--c-white);margin-bottom:10px;line-height:1.2}
+.sec-desc{color:var(--c-muted);max-width:600px;font-size:14px;margin-bottom:4px}
+
+/* XCARDS */
+.card-stack{display:flex;flex-direction:column;gap:6px;margin-top:20px}
+.xcard{background:var(--c-char2);border:1px solid var(--c-border2);border-radius:14px;overflow:hidden;transition:border-color .25s}
+.xcard:hover,.xcard.open{border-color:var(--c-border)}
+.xcard-head{display:flex;align-items:center;gap:16px;padding:18px 22px;cursor:pointer;user-select:none;transition:background .2s}
+.xcard-head:hover{background:rgba(255,255,255,.025)}
+.xcard-icon{flex-shrink:0;width:42px;height:42px;border-radius:9px;background:var(--c-gold4);border:1px solid var(--c-border2);display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.xcard.open .xcard-icon{background:var(--c-gold3);border-color:var(--c-border)}
+.xcard-icon svg{width:18px;height:18px;stroke:var(--c-gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.xcard-info{flex:1;min-width:0}
+.xcard-title{font-family:var(--f-d);font-size:14px;font-weight:600;color:var(--c-white);margin-bottom:2px;line-height:1.3}
+.xcard-sub{font-size:12px;color:var(--c-muted)}
+.xcard-arrow{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid var(--c-border2);display:flex;align-items:center;justify-content:center;transition:transform .35s var(--ease-out),border-color .2s;color:var(--c-muted)}
+.xcard.open .xcard-arrow{transform:rotate(180deg);border-color:var(--c-border);color:var(--c-gold)}
+.xcard-arrow svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.xcard-body{max-height:0;overflow:hidden;transition:max-height .45s var(--ease-out),opacity .3s;opacity:0}
+.xcard.open .xcard-body{opacity:1}
+.xcard-inner{padding:18px 22px 22px;border-top:1px solid var(--c-border2)}
+
+/* CALLOUTS */
+.callout{display:flex;gap:12px;padding:12px 16px;border-radius:10px;margin:12px 0;font-size:13px;line-height:1.55}
+.callout-icon{flex-shrink:0;width:18px;height:18px;margin-top:1px}
+.callout-icon svg{width:18px;height:18px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.callout-ok{background:rgba(94,234,212,.07);border:1px solid rgba(94,234,212,.2);color:var(--c-green)}
+.callout-ok .callout-icon svg{stroke:var(--c-green)}
+.callout-warn{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);color:#fbbf24}
+.callout-warn .callout-icon svg{stroke:#fbbf24}
+.callout-info{background:rgba(147,197,253,.07);border:1px solid rgba(147,197,253,.18);color:var(--c-blue)}
+.callout-info .callout-icon svg{stroke:var(--c-blue)}
+
+/* CALCULATOR */
+.calc-section{padding:clamp(48px,6vw,72px) 0 0}
+.calc-card{background:var(--c-char2);border:1px solid var(--c-border);border-radius:20px;padding:clamp(24px,4vw,40px);margin-top:24px}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.calc-grid{grid-template-columns:1fr}}
+.calc-field{display:flex;flex-direction:column;gap:6px}
+.calc-label{font-family:var(--f-m);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-muted)}
+.calc-input,.calc-select{width:100%;background:var(--c-black);border:1px solid var(--c-border2);border-radius:9px;padding:11px 14px;color:var(--c-white);font-family:var(--f-b);font-size:14px;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+.calc-input:focus,.calc-select:focus{outline:none;border-color:var(--c-border);background:rgba(226,192,116,.04)}
+.calc-input::placeholder{color:var(--c-muted)}
+.calc-divider{height:1px;background:var(--c-border2);margin:24px 0}
+.calc-sub-label{font-family:var(--f-m);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-gold);margin-bottom:12px;opacity:.8}
+
+/* RESULTS */
+.results-box{margin-top:28px;background:var(--c-black);border:1px solid var(--c-border);border-radius:16px;overflow:hidden}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid var(--c-border2)}
+.result-row:last-child{border-bottom:none}
+.result-row.total-row{background:var(--c-gold3);border-top:1px solid var(--c-border)}
+.row-label{font-size:13px;color:var(--c-muted)}
+.row-val{font-family:var(--f-m);font-size:13px;font-weight:700;color:var(--c-white)}
+.row-val.neg{color:var(--c-red)}
+.row-val.pos-total{color:var(--c-gold);font-size:16px}
+.total-row .row-label{color:var(--c-gold);font-weight:600;font-size:14px;font-family:var(--f-d)}
+.results-placeholder{padding:32px;text-align:center;color:var(--c-muted);font-size:13px;font-family:var(--f-m)}
+
+/* AVISO BADGE */
+.aviso-badge{font-family:var(--f-m);font-size:11px;color:var(--c-gold);background:var(--c-gold4);border:1px solid var(--c-border);border-radius:8px;padding:8px 14px;margin-top:10px;display:none}
+
+/* ACTION BTNS */
+.calc-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* RIGHTS SECTION */
+.rights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:20px}
+.right-card{background:var(--c-char2);border:1px solid var(--c-border2);border-radius:14px;padding:20px;transition:border-color .2s}
+.right-card:hover{border-color:var(--c-border)}
+.right-icon{width:38px;height:38px;border-radius:8px;background:var(--c-gold4);border:1px solid var(--c-border2);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.right-icon svg{width:17px;height:17px;stroke:var(--c-gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.right-title{font-family:var(--f-d);font-size:14px;font-weight:600;color:var(--c-white);margin-bottom:6px}
+.right-desc{font-size:12px;color:var(--c-muted);line-height:1.55}
+
+/* FAQ */
+.faq-item{background:var(--c-char2);border:1px solid var(--c-border2);border-radius:12px;overflow:hidden;margin-bottom:6px;transition:border-color .2s}
+.faq-item.open,.faq-item:hover{border-color:var(--c-border)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;font-family:var(--f-d);font-size:14px;font-weight:500;color:var(--c-white);gap:12px}
+.faq-arrow{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1px solid var(--c-border2);display:flex;align-items:center;justify-content:center;transition:transform .3s}
+.faq-arrow svg{width:11px;height:11px;stroke:var(--c-muted);fill:none;stroke-width:2}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease-out),opacity .3s;opacity:0}
+.faq-item.open .faq-a{opacity:1}
+.faq-a-inner{padding:0 20px 18px;font-size:13px;color:var(--c-muted);line-height:1.65;border-top:1px solid var(--c-border2);padding-top:14px}
+
+/* CTA */
+.cta-final{text-align:center;padding:clamp(56px,8vw,88px) clamp(16px,4vw,48px);background:var(--c-char2);border:1px solid var(--c-border);border-radius:24px;margin:clamp(48px,7vw,72px) 0 0}
+.cta-final h2{font-family:var(--f-d);font-size:clamp(22px,4vw,34px);font-weight:700;color:var(--c-white);margin-bottom:12px;line-height:1.2}
+.cta-final p{color:var(--c-muted);max-width:520px;margin:0 auto 32px;font-size:14px;line-height:1.6}
+.cta-urgency{font-family:var(--f-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-gold);margin-bottom:20px;display:block}
+
+/* EXPERT */
+.expert-section{padding:clamp(48px,8vw,80px) 0 0}
+.expert-card{display:flex;gap:clamp(24px,4vw,40px);align-items:flex-start}
+@media(max-width:700px){.expert-card{flex-direction:column;align-items:center;text-align:center}}
+.expert-photo{flex-shrink:0;width:clamp(140px,22vw,200px);aspect-ratio:1;border-radius:14px;overflow:hidden;border:2px solid var(--c-border)}
+.expert-photo img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.expert-info{flex:1;min-width:0}
+.expert-bio{font-size:14px;color:var(--c-body);margin-bottom:16px;line-height:1.65}
+.expert-bio li{margin-bottom:6px;list-style:none;display:flex;align-items:flex-start;gap:6px}
+@media(max-width:700px){.expert-bio li{justify-content:center;text-align:left}}
+.expert-bio svg{width:14px;height:14px;stroke:var(--c-gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-top:2px;flex-shrink:0}
+.expert-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+@media(max-width:700px){.expert-tags{justify-content:center}}
+.expert-tag{font-family:var(--f-m);font-size:9.5px;color:var(--c-muted);border:1px solid var(--c-border2);border-radius:6px;padding:4px 10px;letter-spacing:.02em}
+.expert-stats{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:700px){.expert-stats{justify-content:center}}
+.expert-stat{background:var(--c-gold4);border:1px solid var(--c-border);border-radius:8px;padding:4px 12px;font-family:var(--f-m);font-size:10px;font-weight:700;color:var(--c-gold);letter-spacing:.02em}
+
+/* FOOTER */
+.site-footer{text-align:center;padding:32px 0 48px;font-size:11px;color:var(--c-muted);font-family:var(--f-m);border-top:1px solid var(--c-border2);margin-top:40px}
+.footer-social{display:flex;justify-content:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.footer-social a{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-m);font-size:10px;color:var(--c-muted);text-decoration:none;padding:6px 12px;border:1px solid var(--c-border2);border-radius:8px;transition:all .2s}
+.footer-social a:hover{color:var(--c-gold);border-color:var(--c-border);background:var(--c-gold4)}
+.footer-social a svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s var(--ease-out)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* EXIT POPUP */
+.exit-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(3,4,9,.82);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px}
+.exit-overlay.active{display:flex;animation:exitFadeIn .35s var(--ease-out)}
+@keyframes exitFadeIn{from{opacity:0}to{opacity:1}}
+.exit-modal{background:var(--c-char2);border:1px solid var(--c-border);border-radius:20px;padding:clamp(32px,5vw,48px);max-width:440px;width:100%;text-align:center;position:relative;animation:exitSlideUp .4s var(--ease-out)}
+@keyframes exitSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.exit-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--c-muted);font-size:28px;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all .2s}
+.exit-close:hover{color:var(--c-white);background:rgba(255,255,255,.06)}
+.exit-icon{width:56px;height:56px;margin:0 auto 20px;background:var(--c-gold3);border:1px solid var(--c-border);border-radius:14px;display:flex;align-items:center;justify-content:center}
+.exit-icon svg{width:28px;height:28px;stroke:var(--c-gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.exit-title{font-family:var(--f-d);font-size:clamp(18px,3vw,22px);font-weight:700;color:var(--c-white);line-height:1.3;margin-bottom:10px}
+.exit-sub{font-size:14px;color:var(--c-muted);margin-bottom:24px;line-height:1.55}
+.exit-btn{width:100%;justify-content:center}
+
+/* TRUST BAR */
+.trust-bar{display:flex;justify-content:center;align-items:center;gap:clamp(16px,3vw,40px);flex-wrap:wrap;padding:24px;background:var(--c-char2);border:1px solid var(--c-border2);border-radius:16px;margin-top:32px}
+.trust-item{display:flex;align-items:center;gap:8px;font-family:var(--f-m);font-size:10px;color:var(--c-muted);letter-spacing:.05em;text-transform:uppercase}
+.trust-item svg{width:16px;height:16px;stroke:var(--c-gold);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* WHATSAPP FLOAT */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:800;width:56px;height:56px;background:var(--c-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(226,192,116,.3);text-decoration:none;transition:all .2s}
+.wa-float:hover{transform:scale(1.08);background:var(--c-gold2)}
+.wa-float svg{width:26px;height:26px;fill:var(--c-black)}
+
+/* DEDUCTION */
+.ded-toggle{background:none;border:1px solid var(--c-border2);border-radius:8px;color:var(--c-muted);font-family:var(--f-m);font-size:10px;letter-spacing:.06em;padding:7px 14px;cursor:pointer;margin-top:10px;transition:all .2s;text-align:left;width:100%}
+.ded-toggle:hover{color:var(--c-gold);border-color:var(--c-border)}
+.ded-box{display:none;background:rgba(0,0,0,.2);border:1px solid var(--c-border2);border-radius:10px;overflow:hidden;margin-top:6px}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Calculadora de Verbas Rescisórias</h1>
-  <p class="subtitle">Cálculo conforme CLT e Lei 12.506/2011 — valores orientativos</p>
+<div id="prog"></div>
 
-  <div class="section-label">Dados da rescisão</div>
-  <div class="grid-2">
-    <div class="field">
-      <label>Data de admissão</label>
-      <input type="date" id="admissao">
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABAGlDQ1BpY2MAABiVY2BgPMEABCwGDAy5eSVFQe5OChGRUQrsDxgYgRAMEpOLCxhwA6Cqb9cgai/r4lGHC3CmpBYnA+kPQKxSBLQcaKQIkC2SDmFrgNhJELYNiF1eUlACZAeA2EUhQc5AdgqQrZGOxE5CYicXFIHU9wDZNrk5pckIdzPwpOaFBgNpDiCWYShmCGJwZ3AC+R+iJH8RA4PFVwYG5gkIsaSZDAzbWxkYJG4hxFQWMDDwtzAwbDuPEEOESUFiUSJYiAWImdLSGBg+LWdg4I1kYBC+wMDAFQ0LCBxuUwC7zZ0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCm1j8/yRb+6wAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAAB3RJTUUH6gMFEgwOX9oNswAAF+ZJREFUeNrde3mcVNXR9lPn3KVv9/T07OCMsg3CCIIKRhEVjQsKKoQoCbKICy4YZPU1cYlG4+/9TJRVRASjggooAsqmUSRuCKJEIBEkQthhmH2m9+57T71/9DYDg6CC+vvqn56evktVnaeWU1WH8BPQzUN/g+n3dsTmHcHCfK+4Q5M8wnaw2B9WU7qfbu194e+VuG3c7B+FF/qxhf986QQ0BBxXi1xxpcug8bqkC4lYZ4ayFTZEYphaUWu/VZirB4bc/z42ffnl/x8K+GTReNQHlSjOo25uU4w1NfQXhCwQgVOMMEMxReMOvxuO8cQD1VjjdZF94cCJJ40vcbIFn/3UbWB+ETo5rUtbisdyPHKpS8cQIRLCA5lVYAIEwTQ0us5ricVtW9Jk01RlI0aNoGUvjz4p/MmTJfjNQy/G4mnD4HGRr2FP1U3ZbjHV1OkGIcibkDstdvJvTiiDACKCILY0gfNcOvU5r73LkMzbpz3UN5iVW4j3P95ywvg8KSbw2ZL/gT/kGIW59Eu3gfG6Rr8UxDpASTEzfzETFHNQEFlECUQyAErbBcDMTtzB+miMJ1XWq5U5WSJ0wcDNCIdX/bwU8PYrd+ObQwFxcYf8Mz0uMVrXaKAgZBMxwAmIJ15KKXtviNlYGI6pV12G7G1IvlUKLgJRGhicVhZBKQ7bDpYHI2rytoPx9QXZhnPZbyf9IJ5PmAncPqA9xv1xAMz6wDCfR/5N1+hSIdgkAEwEIgJx4lMptmMOPgjFML6i1pnusNqxozLyQZYpPxKCsgWhHQnoQAIJTAkTEQRdCupsaNSvIFsrEkTbZ81XdYtm/xavL1v7vfj+QQh4YervQCSE5faIg/v+a4995FX8a8WE53xZ+h2JRczYOYHADDiKt0RiPL3aby8o8um1ba58GH949lbyBwK4o2MnDsWVuzBL6+vSMV6TdB4RZBMcpJDBgOPg66jN0+vD8fk+j6pZ+YnEhEennnwEPPTH32POH38By9Tz2rXUbm+RIws6tPL8p6D0MlR88951LkN2p6R2iQBigsOoiNp4pj7E47v2nfjeln++G/mmQhNG5QfdehTmjjqvsIj2HYrstXQZPaO1a8uuivgyQVQpCKcTIZeIEipImREBgqhA19Db0uUFsbhWneuN7xk7vKc9f3c3RPd+fnIUsG7xKJyaH3HphtnX5xFTXDrdISWtMTX+3Nfm8owCktIrhXDMxpuBMMZ8vZ9fZoWadl22oGGP/9S2RTTeMulJXXJfXUO/nCz9NBL83+lL66t9Hg7OWlWx9pw27neFEEIQtRcgK5E3UAJRxCAiIQltdI36eSzZwVZi94Xt5aGRQ3rwnDfWHVOe484DXnlqEJjfg6mbZ59a4Jmd5cI8Q/IlRBCKGZzyWmnPTSoW53X+MA/fUxG7ORyJrytrJR1di2f/++19t+a4aYVL5z9KgWIQIATluAy6K8cjV9x6te/eNi2sohl3F3MworZu3x8cEwg5N0RtXqkUx4iTITP5MiZACGQZGg3NtmhZl9by0SwXteLQU1gy6+4To4Ast4F5U1423CY/amoYKgV5mnoQAmAADDiK9oajfF9Vnd2/tJgWugwRqg8p3Ynbl5fkG695LXpW19CViJKoTjg5IkCTaOvW+YkcD725r1wMdGC4W+Z74rqmra6odwYFo3xn3MEmZiRDSyZeEjGkRLFl8IP5XrF860cHb2uZ5/Id/PRB9Ln8wu+mgFt+fQF2f/g4Pl14b+5nbz3UoqggH5YlSRAsotSKp4hTCQz5w7yoPsR9n10cmVRZh4pHZzWQZWqd2rY0p3nd4g1Do6uFgAEmMDgdGlNOLiEOCV3wBR4Tc07No5ekwAVb9kSlP8T+Tle1fKnar64NR9WfbYf2Z9xjMpVigAika+jiMfFsYQ69Xlkb7j1qeBdjzcJ7jpCzWR+wftnvUVbWytBF+PJsD6ZYBqIeF76saohpRbnmYE1SaWrNAYKjaKUU/PmUl9bihYXrd3Q7u6xi/OAS+EPRFj26uu7OsmiyrtEVQsBFoIQHS1kyZRaRkrBmSv4mWJcCnU2d+uV5RaEusaO4bHJd/yvPbNi+N/pRTra2WhBZglBKRAZxIw/JAAlIKVCq66J/jkdvQ0Q7TSur8v+NvwJzlmw4UgHvLxyPiy/rQa196FLg5UctA3/SJHdSoHekcL6obnC0Ap8xWJNoogCbaaUm8HlVmDD3L7+Fz2O4I9HoAJ9bTHMZdJMUyM3kAylpCQyw7WBjJKamM8BCUCsiFimT4ASsIIg9mkRPQ6erRg4+1yEpdlx4Vl64qsEur/Tbb+uSvhRAMQk6lYhFGlHJ/EMQTCmom6HRWWd1LFzideuRZ15d19QEPl18P+C4tYvby3uy3VhhaLhdCPYlHFoCYkImIzs3lz4wnn+4Dxw7ek7LXDknyyVeMnScT8SCgeSqJgHLgO1gXziGP1X7nevK2mb9b3ld7DfBiBodt7GVmRuhJIkVIugaytwumlbkk4sOVIb61vjZtHQ9WlKUu7yi3rk+HMNY26FtYEoiitO8EQBJyDU10g0tw39aAVkeDYW5cJsaDZGST8tsWJJwAkFKOmrqxAyYnW6ErtEIQ8cNQsBKgzoVvhlQiv0xGy/Wh51rP94aebw2xPup42P4Zn+4tvPVk2bWBfiaSJz+6jioIE7ZR8bGCdAMjX7pcdGCtkX0nGXw2YvXVojqkKw5o3fHGbUBviYSx0TH4SpOLlTjhAyZxzVVABGDRGaF+fArQdCEaPK9sfAJKgEIWsYjpS5lKCY7amO1P6wG7auKjIzHnE23j5murho8BQBw65jnAYBrw2rn5l2RB+pDTv9oHK8rplDCtjn9WiaGEOw1dRruc9OyizqYD7XI5hLeWc/V9aEdm3b4/+APc/+YzYuU4jA1YaYppSXipCDNXaqSnzrJpA1zUyBwJiY32u4l7JiBuI0toQjfU15r3+Ax9ZVLP90fPW/AtGYZumLQFGzYHnLAYl1FPd8cimB43MGnzOSkfEMm7AGaxKmWwX/Kz6JlW7btv8kydW/3shxbsfq0vCY+PBDhW2I2rU+pj9KmeJgCDlvUwwRMYFhKmRG0qfxH/o8Bx6FDkRg/UdOgrul09cSZX22P1La7/K+YPG0Jvo2e+MsLOPu6ifhwsz9clOO8UdVg/yocw322gx3MhEY1pEZhj87xuMSslrn6vEDQvvRAldAZRrDz6e7XKuqc/uEYPxh3aJfDBLs5E0gnFUfIx2mIC5GyqW/RAIGYEYvZmF8fUv3+vTP8UCjq7AKAu+5/Dt+FHnhsFgoumIx9DaHKh1Z8M7kuyNdE4zzdUVTDad+QyQQEkWnqdK3XTYtKS2iS11IdBz+6n2oCXL6jgp6oqHfuqPE79TUBJ/0O7XgY4WTMFkIeIW3md4DIRZ8tvucLEvxedYOz3Jelhf884x1s3PTf7yT44XT98FkAwGMuGb/tUIDHlWSLNywTE3RJvQXBTO82kxxJgTyXTqN0SX0eHpr3rD/kzC3I4coN22L7Bt41o8mz03nAyGG9AJBpSucmAZQ0RkLcxgpd0hfRGGluE4OFQGnjklbcxkpDp8/zC/KpNiQ3HazXvtpbh/iAm6eg/FDtDxK+Mb342lqEUawuPce3uyboLJdCbBeEtoLQgtJ5dcKBExGEQJ4u6XKXIS4Kx7hOkLZr7C0X2yFvG2za8K+mCGicUjZd/VQeIJImcOQ1SikQNDz01DIGYJ8wiZuhxYsWY/EiYMaUu/wjb8mZu3517fvZbu12l04jhKASolTFCUBityg1DRdmCdHNyOc5wXBswoR+haG5SWvM+AA+9stFKg9odC0DUA4f1/0ngi69qBTMe1GS7Xa/81ZQ1gXE/g831T9WH3Kujcb5JaXgT/gyTscqYkAItkyJXlkmZbn1ZhKhtA6aESTjBJPAPzxaEI6aIJ0M2vuPKSg7zbixXUvxcGGOXnzn0FIVjomNe6ucuwJhHhSzabVi2MQJx55IIzKZZWNWj7kdTpWyCICUzWgAzX0/efTBJzsghIKpo4XLUA/73Lx8y+aq4dF43FuYLaK6tFeW1zs3hKMYbSvaejTTbkYBR7+IkxpIhcEfDe/HIAKgazjHY9Ksknx9geOonh16l+E/u2pry3qXPlvrt6+JxPhJR6GC03c05V8c6xWNd/5CNJ8I/VQKSWQBDEFkmBr1del0T8/z/yZrq6rQ+8pZVB+N79x6MHR/Q5j7x+K8WDHCdBiCj50HpHJkAFKc9E7a91MEAcQMItZOa6nj8vNbo1fPTu2VYwfPbScPbNltr6tvsIf7svSzpJRBzmxejjMRapLfH6mfn54y215NZ2Rn6YAUA1iJgXur1JNKYXmBTw9cedv8NfsPHGhyZ2YzxJl9/5GPP4aYPw8tgIhgmDIRrQSELnGux6SXinLl3LiiC6c88mvt/XlNm6zHh+ljyv8z0QAAQ+pNeBaCLUPD9dkW3urc2rx36x4hl76YUcIRCji82Jmq4CgF1NQFSSkWTWyBG5nIT0TpMA+CxzDT5VVO7VKIISXn6xquaFWkdCkym6HDdoPNv4ABhKNxfPnvXXokGnc3f8VPT0SArmnJjVGGp6bVi2+rBzS/swcnivBwFIO5GdT8POQHAGi6nionHpUa/3RcPoA5WVQUIjXU8S2P/ImIU05QAIchoOllTW32mIlQ4iaVzAQFmouFPycEGIYEUbo1i8MXh5mb8NskDB6VktUXIY/UFxHgMvWu+6tQEPrqETw+9pYfXehUIYQA6IaGlOM+HmriBJv3ABkTEIKOMAEigtslRhTm8Fs79wSu79XTZ21YOgHAuSdF2FlTJ0DXGNyE90xv0DC1ZLfp+DRwxEOa1TAj2aFpWj5I9SeJWOoa9/S4aO4puXIOkXPBqzO6yrfn3nXCBL+k1/lYu2QM2hRE3BV+cT2UPbA5jg1dR3Nlu+NQQPOUiqm6JDSEnKijaG2q1t64IsggCILb0Glgjke+1b0054k8n6sdAJr7zA9TxKp5YzBycHdp6bJHmyLzJa+LXpYCXVM9xAyzBEs3GiGgueIG0OxukJPhrsl1SRUQSZiGhp5nFcfK6/iBhpAaEovjY1ZwkJzcSMzyMIgYmkShZdK9BVnaii1/Hz+ytKUrr27DIxh5Z//vJPjcab8DcCblemW7s9tZT/jctNTUaWCi65TpRWRabqTicZk006NHgaM6weZuIQLyfK4htQF15aF62zA0ChcXupdU1DoDgjGMsx3+D6d7cSl2KLlX5zK3KaYW+eSi3eUN1/XtUeJas+jYA4+P3DsI1RseQOkpIv+rt3uPynGLlZZB90pBhWkPT41aZgw77uCjcAyzR4xt6xCJpJDHLtR8qwmkvKuh4SKvRQvbtdCe8VjUZd66feJQIFTd6aqJ02uDqm84xpMcB5Wchleis5swC9ZMDZdmu+W800us2ZYhu70yZYR4/5VRzb5zzeuj0bNLnuvAoUi/olxjsccSk3SNOxI1niVICw7b5m3BCI+vrudfZ5vmqo/f2I0Fq+o0MBUcVajmM0EBZolEKTU1hZOAABMgBftcBo3IcdPyq84o+ENxjruY9zzJtQ3Ojq92xX/fEFK/isX5DaUoTNzYMhPQkAJZloGhuR6xvHtZ9uOGS2v55bKx6avemzsOL08aJbLceve2p1jPey2aZ+rUSxC0FKrSEjDBcVAZjvHE2iBf0+nqSdP3VQSrF6w6ILI8omufntkzDR2303EkaGkFxG2BGr8VjMbVDDvVokaqD9i4F0etXDoeL8iWy7ZuPTjUMjTvGa00W9nOp+VV8eH+MA+PObyWmZ2mDKSnSPKkpA5CUJaQwLyn7wbzZOT4qNW5nc3Hst20zGXQECHgaWysxAlXqxSFonG83hBW/dZvq/7DwerADrZncXGRVdLv0vwHc7K05S6DbpMC2Y1GlhoRNVn3dGPk+fkf4dpL2vAlNz6zade/3l4hBEUFidOJKIuIwUzpHJsIJAWdoklcY5l0TjSO8n21aj+Ioud1yt6yfX90qRSoIFB7QZRHlHRQDtaHY3xfZYP6S162dijH0gFCTmCvf5jXoqmmTtcLAS8nhygobeuJ0aO4jXWhGO4rr3Ge0qTYWZzvVszC699XfaPPI6a6dNwoBfkazyhSctSAGYjZWLfzUPxNXQrntWWfp9VxBK16ZRQq6mKyc1tvd7eJcbpEPyHInUqW6HA4KtTGbF4QiPD0xWvCW88p1fjF98rp0SGndfC6aZSU6GU7eLUuoOac0cZz6Kv/+hGMKLNlrnaZyxAT9ATUdSQjCdKNrsQssaN4eyTGM2r9zitntrEqN+8MIxRVeotc2ctjyvG6hiuEICPFD1PjyMBwFB+I2Xi+IYTZZ7b17VuwahdunfDi0RUAAJpuYu0b96AhaFstcmQfV2LouQcRyxSU0pObyVzAUdgZjann6oLxOT0uPKX8g/fLoRiGbgpfMCSr405M7TwUEBd18p3ldcvRhobrBZE30chJ1m0TBb7kEDWqY3F+xR92Zox8puqb+2/w8Mb/1FL/XsWdvJYcpWsYJIhyqOlkdbp0rxQCMZsXBaI8dcPWmk3FBS51zS0zjzCIb6UHx9+E+4edhq92BguyPXKYqeNuKdCeKIOCdGsyOVgRjePjugDdZem8pcu1EzFr6p24fXRrrH+z4tRstxxhahghZaKNlZ4vRGY4QzEicQdvB6Nq8tcHAmuzXbrd59cl+OzvFS19HnGzqYu7pODWqQovJ31EWnBmO27jk1BUTSyvi77nccnoRdc/3ax8x93RmD/jDvx14X56flz70z0uOcrUaIgUyMtsvgnMzLbCxqiNqXUBXmwZ8JsSqPbb2blZ2g0uk8boEl0okT1lzChlTYCKO/giHOXJ1UF7mc+jBU0i1AVsT7ZH6+9KmGO31Fj94WcOErNH/HXUpqdr/fEFbYqyama+8zX+/L+LjirXd27prJ5/DxrCttam0NXT7RLjDQ1XEcGlFO2NOZjVEHZeOPc8+8CHHwINYdtoU2T1sgyaoEtcJghGunvbiIXEEDV2RuJqZkNIzSlrpx3auDWKQFhprVu4elomjdMErhYEV2paunGhOlmyq4jEMScYic88t//UnQuevZMHjTz2PML36mm169odbz3xS1T77axCn/iVJOoWifPcL7bFNp+SR+pf22tE7/OLOnksMdrQ8BtJ8KVm9xL5e/LVDDjMtdE45gciPH3W6j1fX3FmPs//ZD89OKC0o9fSfmfoGCwIedTsGQLAUQjHbF4eivCkLfvinxdmS6f3kOOfGP9BTb1x4/pCSpDLJSjPe4oa1ycL/9wlS9ymutXUaYRMzP0lPXPSuyeFUIqjcYfeDUfVpN2HImu8bi3e+fQ87NhTV+Rzi2GmRndLSe2IDmtKJD0vM5y4g89CUTX5UHV4ZZ7PCt0/+QDe/cdr30mGE9bVnP+3hzDo1i+xeeUZw7wWntQkt0gw3LSVzAwVd/jLcExNrfGrJYXZRiBiMxpC7M7P4mstE+M0Sb8QRDIhL6dPmCQ+CI7iHVEbM2r96uUzW1mVz62uwf/8fub34vuEnRip3bEZpQWXo7wytMWytI8I8AkSiZMfSdg6Du8Jx/ip2qC6r9uZJWu27a6N7auKaYVerUe+V/zFMug+TaItkk6O0PjsEMFRVBOz+fmGMMY+slStKGuJYNe+T+K9VV98b75PeF/bl5uHD+behjp/zF2Yp/exdJ4gCB1iDhb5Q87TS9fs3FLWOk+NnryR3pl4UanXMu42NBomBQoApIY8G0/DQSlE4w7/PRzlSXvLY2u8brJ73fj09+bxpCogRbMn34T+PU7DnopAC01qxRV10S2mJqIdWuvYddAp8LnFEFOn32mSTk/t3xPmTellZ4aK27wxEuPJVfXOm/nZeuDmGe9jw4oTd5r0R5tseHnqaAwdrWHjclzptehRXWt8HqgxK5wMi7QnGudZ/qD9wi96tjg4+4XtuOOBF044X8fVHT4RlBiusEGkB5hRy8w2ATJduk54diim+licFwZjzrR3/xn9qqxEKmr5wEnj60c9PN2xcye8NeVaHKgOZbXIMfq7dBqjSepOBKEUx+IOrQ7H1KSDtc6HXjfFeg6YctJ5+tFPjwPAnJkPYtAvgti4R5zm84ixUqJfLM7PVjTYL5YUWLUPPP0PvLHksx+Fl/8Drb/OKtibFKgAAAAedEVYdGljYzpjb3B5cmlnaHQAR29vZ2xlIEluYy4gMjAxNqwLMzgAAAAUdEVYdGljYzpkZXNjcmlwdGlvbgBzUkdCupBzBwAAAABJRU5ErkJggg==" alt="SI" width="28" height="28" style="border-radius:6px;width:28px;height:28px"/>
+      <span>Super Inteligênc[IA]</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#direitos">Seus Direitos</a>
+      <a href="#calculadora">Calculadora</a>
+      <a href="#tipos">Tipos de Rescisão</a>
+      <a href="#faq">Dúvidas</a>
+      <a href="#contato">Falar com Advogado</a>
     </div>
-    <div class="field">
-      <label>Data de demissão</label>
-      <input type="date" id="demissao">
-    </div>
+    <button class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+</nav>
 
-  <div class="field">
-    <label>Tipo de rescisão</label>
-    <select id="tipo">
-      <option value="sem_justa">Sem justa causa (empregador)</option>
-      <option value="pedido">Pedido de demissão</option>
-      <option value="com_justa">Com justa causa (empregador)</option>
-      <option value="acordo">Acordo entre as partes (§6º do art. 484-A)</option>
-      <option value="indireta">Rescisão indireta (empregado)</option>
-    </select>
-  </div>
-
-  <div id="aviso-info" class="aviso-info"></div>
-
-  <div class="divider"></div>
-  <div class="section-label">Remuneração</div>
-  <div class="grid-2">
-    <div class="field">
-      <label>Salário base (R$)</label>
-      <input type="number" id="salario" placeholder="0,00" min="0" step="100" value="3000">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-badge">Ferramenta Gratuita — Super Inteligênc[IA]</div>
+    <h1>Você sabe quais <span class="gold">verbas rescisórias</span><br/>tem direito a receber?</h1>
+    <p class="hero-sub">Calcule em segundos o que a empresa deve pagar na sua demissão. Aviso prévio, FGTS, férias e muito mais — tudo calculado automaticamente, com base na legislação trabalhista brasileira.</p>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-val">100%</div><div class="h-stat-label">Gratuito</div></div>
+      <div class="h-stat"><div class="h-stat-val">CLT</div><div class="h-stat-label">Base legal</div></div>
+      <div class="h-stat"><div class="h-stat-val">Lei 12.506</div><div class="h-stat-label">Aviso prévio</div></div>
     </div>
-    <div class="field">
-      <label>Adicionais fixos (R$)</label>
-      <input type="number" id="adicionais" placeholder="0,00" min="0" step="50" value="0">
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="#calculadora" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        Calcular agora
+      </a>
+      <a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" class="btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.61l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.35-1.558l-.383-.23-2.65.889.889-2.65-.23-.383A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Falar com advogado
+      </a>
     </div>
-  </div>
-  <div class="grid-2">
-    <div class="field">
-      <label>Média mensal horas extras (R$)</label>
-      <input type="number" id="horas_extras" placeholder="0,00" min="0" step="50" value="0">
-    </div>
-    <div class="field">
-      <label>Férias vencidas (períodos)</label>
-      <select id="ferias_vencidas">
-        <option value="0">Nenhum</option>
-        <option value="1">1 período</option>
-        <option value="2">2 períodos</option>
-      </select>
+    <div class="trust-bar">
+      <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Dados apenas no seu dispositivo</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Baseado na CLT e Lei 12.506/2011</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Resultado em tempo real</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>+100k trabalhadores atendidos</div>
     </div>
   </div>
+</section>
 
-  <div class="divider"></div>
-  <div class="results-header">
-    <div class="results-title">Verbas rescisórias</div>
-    <button class="copy-btn" id="copyBtn" onclick="copyResults()">Copiar relatório</button>
+<!-- SEUS DIREITOS -->
+<section id="direitos" class="sec-header reveal">
+  <div class="wrap">
+    <div class="sec-sup">Legislação Trabalhista</div>
+    <h2>Entenda seus <span class="gold">direitos</span> antes de calcular</h2>
+    <p class="sec-desc">Cada verba rescisória tem regra própria. Conheça o que está previsto na lei antes de aceitar qualquer acordo.</p>
+
+    <div class="rights-grid">
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg></div>
+        <div class="right-title">Saldo de salário</div>
+        <div class="right-desc">Dias trabalhados no mês da demissão que ainda não foram pagos. Direito garantido em qualquer tipo de rescisão, inclusive com justa causa.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="right-title">Aviso prévio</div>
+        <div class="right-desc">Mínimo 30 dias + 3 dias por ano de serviço (Lei 12.506/2011). Pode ser trabalhado ou indenizado, dependendo do tipo de rescisão.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="right-title">13º proporcional</div>
+        <div class="right-desc">Proporcional aos meses trabalhados no ano. Em janeiro = 1/12. Em dezembro = 12/12. Não é devido em demissão com justa causa.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+        <div class="right-title">Férias + 1/3</div>
+        <div class="right-desc">Férias proporcionais (meses do período aquisitivo em curso) e férias vencidas — ambas acrescidas de 1/3 constitucional.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="right-title">FGTS + multa 40%</div>
+        <div class="right-desc">O empregador deposita 8% do salário mensal. Na demissão sem justa causa, o trabalhador recebe o saldo + multa de 40% sobre todos os depósitos do contrato.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+        <div class="right-title">Acordo mútuo (art. 484-A)</div>
+        <div class="right-desc">Reforma Trabalhista criou a rescisão por acordo: aviso prévio e multa FGTS reduzidos à metade, mas o trabalhador pode movimentar o FGTS.</div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div id="chips" class="info-chips"></div>
+<!-- CALCULADORA -->
+<section id="calculadora" class="calc-section reveal">
+  <div class="wrap">
+    <div class="sec-sup">Calculadora Trabalhista</div>
+    <h2>Calcule suas <span class="gold">verbas rescisórias</span></h2>
+    <p class="sec-desc">Preencha os dados abaixo. O resultado aparece automaticamente, em tempo real.</p>
 
-  <div class="result-rows" id="result-rows">
-    <div class="result-row"><span class="row-label">Preencha os campos acima</span><span class="row-val">—</span></div>
+    <div class="calc-card">
+      <div class="calc-sub-label">Dados da rescisão</div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label class="calc-label">Data de admissão</label>
+          <input type="date" id="admissao" class="calc-input"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label">Data de demissão</label>
+          <input type="date" id="demissao" class="calc-input"/>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <div class="calc-field">
+          <label class="calc-label">Tipo de rescisão</label>
+          <select id="tipo" class="calc-select">
+            <option value="sem_justa">Sem justa causa (empregador)</option>
+            <option value="pedido">Pedido de demissão</option>
+            <option value="com_justa">Com justa causa (empregador)</option>
+            <option value="acordo">Acordo entre as partes (art. 484-A)</option>
+            <option value="indireta">Rescisão indireta (empregado)</option>
+          </select>
+        </div>
+        <div id="aviso-badge" class="aviso-badge"></div>
+      </div>
+
+      <div class="calc-divider"></div>
+      <div class="calc-sub-label">Remuneração</div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label class="calc-label">Salário base (R$)</label>
+          <input type="number" id="salario" class="calc-input" placeholder="Ex: 3.000,00" min="0" step="100"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label">Adicionais fixos mensais (R$)</label>
+          <input type="number" id="adicionais" class="calc-input" placeholder="Insalubridade, periculosidade..." min="0" step="50"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label">Média mensal de horas extras (R$)</label>
+          <input type="number" id="horas_extras" class="calc-input" placeholder="Média dos últimos 12 meses" min="0" step="50"/>
+        </div>
+        <div class="calc-field">
+          <label class="calc-label">Férias vencidas (períodos completos)</label>
+          <select id="ferias_vencidas" class="calc-select">
+            <option value="0">Nenhum período vencido</option>
+            <option value="1">1 período vencido</option>
+            <option value="2">2 períodos vencidos</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div style="margin-top:28px">
+        <div class="calc-sub-label">Resultado — verbas rescisórias</div>
+        <div class="results-box" id="resultsBox">
+          <div class="results-placeholder">Preencha os campos acima para ver o cálculo</div>
+        </div>
+        <button class="ded-toggle" id="dedToggle" style="display:none" onclick="toggleDed()">&#9656; Ver descontos estimados (INSS + IR estimado)</button>
+        <div class="ded-box" id="dedBox"></div>
+        <div class="calc-actions" id="calcActions" style="display:none">
+          <button onclick="copyReport()" class="btn-outline" id="copyBtn" style="font-size:13px;padding:10px 20px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copiar relatório
+          </button>
+          <a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" class="btn-primary" style="font-size:13px;padding:10px 20px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.61l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.35-1.558l-.383-.23-2.65.889.889-2.65-.23-.383A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Falar com advogado trabalhista
+          </a>
+        </div>
+        <div id="cta-inline" style="display:none;margin-top:16px">
+          <div class="callout callout-info">
+            <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="callout-text">Este é um cálculo estimativo. Para garantir que receberá tudo corretamente, converse com um advogado trabalhista. <a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" style="color:var(--c-gold);text-decoration:none;font-weight:600">Clique aqui para falar agora.</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="deduction-section" id="deduction-section" style="display:none">
-    <button class="deduction-toggle" id="ded-toggle" onclick="toggleDed()">▸ Ver descontos estimados (INSS + IR)</button>
-    <div id="ded-rows" class="deduction-rows" style="display:none"></div>
+<!-- TIPOS DE RESCISÃO -->
+<section id="tipos" class="sec-header reveal">
+  <div class="wrap">
+    <div class="sec-sup">Tipos de Rescisão</div>
+    <h2>Qual é o seu <span class="gold">tipo de demissão?</span></h2>
+    <p class="sec-desc">Cada modalidade tem um conjunto diferente de direitos. Entenda cada uma antes de assinar qualquer documento.</p>
+
+    <div class="card-stack">
+      <div class="xcard" data-card>
+        <div class="xcard-head">
+          <div class="xcard-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="xcard-info">
+            <div class="xcard-title">Demissão sem justa causa</div>
+            <div class="xcard-sub">Iniciativa do empregador — maior proteção ao trabalhador</div>
+          </div>
+          <div class="xcard-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="xcard-body"><div class="xcard-inner">
+          <p style="font-size:14px;color:var(--c-body);margin-bottom:12px">Quando a empresa decide encerrar o contrato sem que o empregado tenha cometido falta grave. É a modalidade com maior proteção legal ao trabalhador.</p>
+          <p style="font-size:13px;color:var(--c-muted);margin-bottom:16px"><strong style="color:var(--c-white)">Direitos garantidos:</strong> Saldo de salário, aviso prévio indenizado, 13º proporcional, férias proporcionais + 1/3, férias vencidas + 1/3, FGTS do contrato + multa de 40%, seguro-desemprego.</p>
+          <div class="callout callout-warn">
+            <div class="callout-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="callout-text">Nunca assine um pedido de demissão se a iniciativa foi da empresa. Isso muda completamente seus direitos.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="xcard" data-card>
+        <div class="xcard-head">
+          <div class="xcard-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="xcard-info">
+            <div class="xcard-title">Pedido de demissão</div>
+            <div class="xcard-sub">Iniciativa do empregado — menos verbas</div>
+          </div>
+          <div class="xcard-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="xcard-body"><div class="xcard-inner">
+          <p style="font-size:14px;color:var(--c-body);margin-bottom:12px">Quando o próprio empregado decide sair. Perde o direito ao seguro-desemprego, à multa de 40% do FGTS e ao aviso prévio indenizado — ou deve cumpri-lo.</p>
+          <p style="font-size:13px;color:var(--c-muted);margin-bottom:16px"><strong style="color:var(--c-white)">Direitos garantidos:</strong> Saldo de salário, 13º proporcional, férias proporcionais + 1/3, férias vencidas + 1/3. O FGTS pode ser sacado apenas em situações específicas.</p>
+          <div class="callout callout-info">
+            <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="callout-text">Se a empresa está criando condições para forçar sua saída (assédio, mudança de função, redução de salário), pode configurar rescisão indireta — com direitos plenos.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="xcard" data-card>
+        <div class="xcard-head">
+          <div class="xcard-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <div class="xcard-info">
+            <div class="xcard-title">Justa causa</div>
+            <div class="xcard-sub">Falta grave do empregado — mínimo de direitos</div>
+          </div>
+          <div class="xcard-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="xcard-body"><div class="xcard-inner">
+          <p style="font-size:14px;color:var(--c-body);margin-bottom:12px">Aplicada quando o empregado comete falta grave prevista no art. 482 da CLT: desonestidade, embriaguez habitual, indisciplina, ato lesivo à empresa, entre outros.</p>
+          <p style="font-size:13px;color:var(--c-muted);margin-bottom:16px"><strong style="color:var(--c-white)">Direito apenas:</strong> Saldo de salário e férias vencidas (se houver). Perde aviso prévio, 13º, FGTS, multa e seguro-desemprego.</p>
+          <div class="callout callout-warn">
+            <div class="callout-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="callout-text">A justa causa precisa ser devidamente documentada pela empresa. Muitas são revertidas na Justiça. Procure um advogado antes de aceitar.</div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="xcard" data-card>
+        <div class="xcard-head">
+          <div class="xcard-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></div>
+          <div class="xcard-info">
+            <div class="xcard-title">Acordo mútuo (art. 484-A) e rescisão indireta</div>
+            <div class="xcard-sub">Modalidades da Reforma Trabalhista e da CLT clássica</div>
+          </div>
+          <div class="xcard-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="xcard-body"><div class="xcard-inner">
+          <p style="font-size:14px;color:var(--c-body);margin-bottom:8px"><strong style="color:var(--c-white)">Acordo mútuo (art. 484-A):</strong> Introduzido pela Reforma Trabalhista (Lei 13.467/2017). Aviso prévio e multa FGTS reduzidos à metade (20%), mas o trabalhador pode movimentar o FGTS e tem acesso parcial ao seguro-desemprego. Precisa da anuência de ambas as partes.</p>
+          <p style="font-size:14px;color:var(--c-body);margin-bottom:12px"><strong style="color:var(--c-white)">Rescisão indireta:</strong> Quando a empresa descumpre obrigações legais ou contratuais (atraso de salário, assédio, alteração prejudicial de função). O trabalhador pode pedir rescisão mantendo todos os direitos de uma demissão sem justa causa.</p>
+          <div class="callout callout-ok">
+            <div class="callout-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="callout-text">Na rescisão indireta, o trabalhador não precisa se demitir — aciona a Justiça do Trabalho ou o sindicato para reconhecimento da falta grave do empregador.</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="footer">Calculadora orientativa — consulte sempre um advogado trabalhista</div>
+<!-- FAQ -->
+<section id="faq" class="sec-header reveal">
+  <div class="wrap">
+    <div class="sec-sup">Dúvidas Frequentes</div>
+    <h2>Perguntas que todo <span class="gold">trabalhador faz</span></h2>
+    <p class="sec-desc">Respostas diretas às dúvidas mais comuns sobre rescisão contratual.</p>
+
+    <div style="margin-top:24px">
+      <div class="faq-item" data-faq>
+        <div class="faq-q">A empresa pode me mandar embora sem pagar nada?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Não. Mesmo na justa causa o empregado tem direito ao saldo de salário e a férias vencidas com 1/3. Na demissão sem justa causa, todos os direitos previstos na CLT devem ser pagos em até 10 dias corridos após o fim do contrato. O não pagamento gera multa prevista no art. 477 da CLT e pode ser objeto de ação trabalhista.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">Posso recusar assinar o TRCT se não concordo com os valores?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim. Você pode assinar o TRCT (Termo de Rescisão do Contrato de Trabalho) com ressalvas, anotando que os valores estão incompletos. Também pode recusar a assinatura e ingressar com reclamação trabalhista. Não assine documentos em branco ou que contenham valores que você não concorda sem orientação jurídica.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">O que acontece se a empresa atrasar o pagamento das verbas?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">A empresa tem até 10 dias corridos após o fim do contrato para realizar o pagamento. Se atrasar, incorre em multa equivalente a um salário do empregado (art. 477, §8º da CLT). Esse prazo vale para todos os tipos de rescisão, exceto para a extinção do contrato por morte do empregado.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">A calculadora considera o FGTS que a empresa não depositou?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Não. A calculadora estima o FGTS com base nos meses trabalhados e salário declarado, assumindo que todos os depósitos foram realizados corretamente. Se a empresa não depositou o FGTS em algum período, você pode verificar o saldo pelo app do FGTS (Caixa Econômica Federal) e, se houver diferença, ingressar com reclamação trabalhista para cobrar os valores em atraso mais multa.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">Tenho direito ao seguro-desemprego? Quantas parcelas?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim, mas apenas em demissões sem justa causa e rescisão indireta. O número de parcelas depende do tempo de serviço: 1ª demissão (mínimo 12 meses) = 4 parcelas; 2ª demissão (mínimo 9 meses) = 5 parcelas; 3ª demissão em diante (mínimo 6 meses) = 5 parcelas. O valor é calculado com base na média dos últimos 3 salários.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">Comissões e gorjetas entram no cálculo das verbas?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim. Comissões, gorjetas e gratificações habituais integram a remuneração do trabalhador e devem compor a base de cálculo das verbas rescisórias. A média dos últimos 12 meses é utilizada como referência. Se a empresa não incluiu esses valores no cálculo, você pode reclamar na Justiça do Trabalho.</div></div>
+      </div>
+      <div class="faq-item" data-faq>
+        <div class="faq-q">Posso entrar com ação trabalhista mesmo depois de assinar o TRCT?<div class="faq-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim, em muitos casos. A assinatura do TRCT não implica quitação plena de todos os direitos, especialmente se houver diferenças não discriminadas. O prazo prescricional para ações trabalhistas é de 2 anos após o fim do contrato (e 5 anos para créditos durante o contrato, respeitado o limite de 2 anos). Consulte um advogado para avaliar sua situação específica.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contato" class="sec-header reveal">
+  <div class="wrap">
+    <div class="cta-final">
+      <span class="cta-urgency">Proteção jurídica especializada</span>
+      <h2>Seus direitos foram <span class="gold">respeitados?</span></h2>
+      <p>Muitos trabalhadores recebem valores incorretos sem perceber. Um advogado trabalhista pode verificar se o cálculo da empresa está correto e, se necessário, acionar a Justiça para garantir o que é seu por lei.</p>
+      <a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" class="btn-primary btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.61l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.35-1.558l-.383-.23-2.65.889.889-2.65-.23-.383A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Falar com advogado trabalhista
+      </a>
+      <p style="font-size:11px;color:var(--c-muted);margin-top:16px;margin-bottom:0">Atendimento via WhatsApp — resposta rápida</p>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALISTA -->
+<section class="expert-section reveal">
+  <div class="wrap">
+    <div class="sec-sup">Conheça o Especialista</div>
+    <h2>Quem está por trás da <span class="gold">Super Inteligênc[IA]</span></h2>
+    <div class="card-stack">
+      <div class="xcard" data-card>
+        <div class="xcard-head">
+          <div class="xcard-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+          <div class="xcard-info">
+            <div class="xcard-title">Marcílio Guedes Drummond</div>
+            <div class="xcard-sub">CEO e Fundador da Super Inteligênc[IA] — Advogado &amp; Empresário</div>
+          </div>
+          <div class="xcard-arrow"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+        </div>
+        <div class="xcard-body"><div class="xcard-inner">
+          <div class="expert-card">
+            <div class="expert-photo">
+              <img src="data:image/jpeg;base64,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" alt="Marcílio Guedes Drummond"/>
+            </div>
+            <div class="expert-info">
+              <ul class="expert-bio">
+                <li><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>CEO e fundador da Super Inteligênc[IA] — empresa de IA aplicada com educação executiva, consultoria e desenvolvimento de produtos, com mais de 100 mil clientes atendidos.</li>
+                <li><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Diretor de Projetos e Presidente da Comissão de IA do Instituto Juristas. Autor de 14 livros, incluindo 2 recomendados pelo STJ na temática IA e Direito.</li>
+                <li><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Trajetória com resultados comprovados — contribuiu para a geração e expansão de mais de R$ 1,5 bilhão em faturamento para clientes ao longo da carreira.</li>
+              </ul>
+              <div class="expert-tags">
+                <span class="expert-tag">Advogado &amp; Empresário</span>
+                <span class="expert-tag">Especialista em Design de Serviços (MIT)</span>
+                <span class="expert-tag">Reconhecido pela FGV em inovação jurídica</span>
+                <span class="expert-tag">Ex-COO EasyJur (investimento Google)</span>
+                <span class="expert-tag">Julgador CNJ</span>
+                <span class="expert-tag">Mentor Sebrae Nacional</span>
+              </div>
+              <div class="expert-stats">
+                <span class="expert-stat">+460k audiência</span>
+                <span class="expert-stat">+150k no YouTube</span>
+                <span class="expert-stat">+100k clientes</span>
+                <span class="expert-stat">14 livros publicados</span>
+                <span class="expert-stat">+R$ 1,5 bi em valor gerado</span>
+              </div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-social">
+      <a href="https://www.youtube.com/@SuperInteligencIAOficial" target="_blank"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>
+      <a href="https://www.instagram.com/marcilio.drummond/" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
+      <a href="https://www.linkedin.com/in/marcilioguedesdrummond/" target="_blank"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+      <a href="https://site.superinteligencia.org/" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Site</a>
+    </div>
+    <p>Super Inteligênc[IA] — Todos os direitos reservados</p>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" class="wa-float" title="Falar com advogado">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.61l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.35-1.558l-.383-.23-2.65.889.889-2.65-.23-.383A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+
+<!-- EXIT POPUP -->
+<div id="exitPopup" class="exit-overlay">
+  <div class="exit-modal">
+    <button class="exit-close" id="exitClose">&times;</button>
+    <div class="exit-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <h3 class="exit-title">Seus direitos estão sendo <span class="gold">respeitados?</span></h3>
+    <p class="exit-sub">Erros no cálculo das verbas são mais comuns do que você imagina. Fale com um advogado trabalhista agora — sem compromisso.</p>
+    <a href="https://wa.me/message/NSPS5ULND5FNP1" target="_blank" class="btn-primary btn-lg exit-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.61.61l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 01-5.35-1.558l-.383-.23-2.65.889.889-2.65-.23-.383A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Falar no WhatsApp agora
+    </a>
+  </div>
 </div>
 
 <script>
+// PROGRESS BAR
+window.addEventListener('scroll',()=>{
+  const p=document.getElementById('prog');
+  p.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';
+});
+
+// NAV TOGGLE
+document.getElementById('navToggle').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// XCARDS
+document.querySelectorAll('[data-card]').forEach(card=>{
+  card.querySelector('.xcard-head').addEventListener('click',()=>{
+    const isOpen=card.classList.contains('open');
+    document.querySelectorAll('[data-card].open').forEach(c=>{
+      c.classList.remove('open');
+      c.querySelector('.xcard-body').style.maxHeight='0';
+    });
+    if(!isOpen){
+      card.classList.add('open');
+      card.querySelector('.xcard-body').style.maxHeight=card.querySelector('.xcard-body').scrollHeight+200+'px';
+    }
+  });
+});
+
+// FAQ
+document.querySelectorAll('[data-faq]').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('[data-faq].open').forEach(f=>{
+      f.classList.remove('open');
+      f.querySelector('.faq-a').style.maxHeight='0';
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      item.querySelector('.faq-a').style.maxHeight=item.querySelector('.faq-a').scrollHeight+40+'px';
+    }
+  });
+});
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// CALC LOGIC
 const fmt=v=>'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-function diffMonths(a,b){let m=(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth());if(b.getDate()<a.getDate())m--;return m;}
-function diasRestantesMes(adm,dem){return dem.getDate();}
-function avisoPrevio(mesesTrabalhados){const base=30;const extra=Math.min(Math.max(Math.floor(mesesTrabalhados/12)-1,0),20)*3;return base+extra;}
-function inss(base){const tabela=[[1518,0.075],[2793.88,0.09],[4190.83,0.12],[8157.41,0.14]];let desc=0,ant=0;for(const[teto,aliq]of tabela){if(base>ant){const fat=Math.min(base,teto)-ant;desc+=fat*aliq;}ant=teto;if(base<=teto)break;}return Math.min(desc,1131.19);}
-function ir(base_calc){const tabela=[[2259.20,0,0],[2826.65,0.075,169.44],[3751.05,0.15,381.44],[4664.68,0.225,662.77],[Infinity,0.275,896.00]];for(const[teto,aliq,ded]of tabela){if(base_calc<=teto)return Math.max(base_calc*aliq-ded,0);}return 0;}
+function inss(base){
+  const t=[[1518,.075],[2793.88,.09],[4190.83,.12],[8157.41,.14]];
+  let d=0,a=0;
+  for(const[teto,aliq]of t){if(base>a){d+=(Math.min(base,teto)-a)*aliq}a=teto;if(base<=teto)break}
+  return Math.min(d,1131.19);
+}
+function ir(b){
+  const t=[[2259.20,0,0],[2826.65,.075,169.44],[3751.05,.15,381.44],[4664.68,.225,662.77],[Infinity,.275,896]];
+  for(const[lim,al,ded]of t){if(b<=lim)return Math.max(b*al-ded,0)}return 0;
+}
+function avisoDias(meses){return 30+Math.min(Math.max(Math.floor(meses/12)-1,0),20)*3}
+function diffMonths(a,b){
+  let m=(b.getFullYear()-a.getFullYear())*12+(b.getMonth()-a.getMonth());
+  if(b.getDate()<a.getDate())m--;
+  return Math.max(m,0);
+}
+window._calcData={};
 let showDed=false;
-function toggleDed(){showDed=!showDed;document.getElementById('ded-rows').style.display=showDed?'block':'none';document.getElementById('ded-toggle').textContent=(showDed?'▾':'▸')+' Ver descontos estimados (INSS + IR)';}
-function calc(){
+function toggleDed(){
+  showDed=!showDed;
+  document.getElementById('dedBox').style.display=showDed?'block':'none';
+  document.getElementById('dedToggle').textContent=(showDed?'▾':'▸')+' Ver descontos estimados (INSS + IR estimado)';
+}
+function renderResult(){
   const admStr=document.getElementById('admissao').value;
   const demStr=document.getElementById('demissao').value;
   const tipo=document.getElementById('tipo').value;
-  const salario=parseFloat(document.getElementById('salario').value)||0;
-  const adicionais=parseFloat(document.getElementById('adicionais').value)||0;
-  const hextra=parseFloat(document.getElementById('horas_extras').value)||0;
+  const sal=parseFloat(document.getElementById('salario').value)||0;
+  const adic=parseFloat(document.getElementById('adicionais').value)||0;
+  const hex=parseFloat(document.getElementById('horas_extras').value)||0;
   const fv=parseInt(document.getElementById('ferias_vencidas').value)||0;
-  const avInfoEl=document.getElementById('aviso-info');
-  if(!admStr||!demStr||!salario){
-    document.getElementById('result-rows').innerHTML='<div class="result-row"><span class="row-label">Preencha os campos acima</span><span class="row-val">—</span></div>';
-    document.getElementById('deduction-section').style.display='none';
-    document.getElementById('chips').innerHTML='';avInfoEl.textContent='';return;
+  const box=document.getElementById('resultsBox');
+  const badge=document.getElementById('aviso-badge');
+  if(!admStr||!demStr||!sal){
+    box.innerHTML='<div class="results-placeholder">Preencha os campos acima para ver o cálculo</div>';
+    badge.style.display='none';
+    document.getElementById('dedToggle').style.display='none';
+    document.getElementById('calcActions').style.display='none';
+    document.getElementById('cta-inline').style.display='none';
+    return;
   }
-  const adm=new Date(admStr+'T00:00:00');const dem=new Date(demStr+'T00:00:00');
-  if(dem<=adm){document.getElementById('result-rows').innerHTML='<div class="result-row"><span class="row-label" style="color:var(--text-danger)">Data de demissão deve ser após admissão</span><span class="row-val">—</span></div>';return;}
+  const adm=new Date(admStr+'T00:00:00');
+  const dem=new Date(demStr+'T00:00:00');
+  if(dem<=adm){box.innerHTML='<div class="results-placeholder" style="color:var(--c-red)">Data de demissão deve ser posterior à admissão</div>';return;}
   const meses=diffMonths(adm,dem);
-  const diasTrabMes=diasRestantesMes(adm,dem);
   const diasNoMes=new Date(dem.getFullYear(),dem.getMonth()+1,0).getDate();
-  const remuneracao=salario+adicionais+hextra;
-  const diasAviso=avisoPrevio(meses);
-  const anosCompletos=Math.floor(meses/12);
-  avInfoEl.textContent=`Lei 12.506/2011 — ${anosCompletos} ano(s) completo(s) → aviso prévio de ${diasAviso} dias`;
-  const temDireito=(tipo_,verba)=>{if(tipo_==='com_justa')return['saldo'].includes(verba);if(tipo_==='pedido')return!['fgts_multa','aviso'].includes(verba);if(tipo_==='acordo')return verba!=='aviso';return true;};
-  const saldo=(remuneracao/diasNoMes)*diasTrabMes;
-  const mesesAquisitivos13=(dem.getMonth()+1);
-  const trezeimos=temDireito(tipo,'trezeimos')?(remuneracao/12)*mesesAquisitivos13:0;
-  const mesesFeriasProporcionais=meses%12;
-  const feriasProporcionais=temDireito(tipo,'ferias')?(remuneracao/12)*mesesFeriasProporcionais:0;
-  const tercoFerias=(feriasProporcionais/3);
-  const feriasVencidas=fv*(remuneracao+(remuneracao/3));
-  const depositos=remuneracao*meses*0.08;
-  const fgtsMulta=temDireito(tipo,'fgts_multa')?depositos*0.4:0;
-  const fgtsMeses=temDireito(tipo,'fgts_mes')?remuneracao*0.08*1:0;
-  const avisoProp=temDireito(tipo,'aviso')?(remuneracao/30)*diasAviso:0;
+  const diasTrab=dem.getDate();
+  const rem=sal+adic+hex;
+  const avisoDia=avisoDias(meses);
+  badge.style.display='block';
+  badge.textContent=`Lei 12.506/2011 — ${Math.floor(meses/12)} ano(s) completo(s) → Aviso prévio de ${avisoDia} dias`;
+  const td=tipo==='com_justa';
+  const tp=tipo==='pedido';
+  const ta=tipo==='acordo';
+  const saldo=(rem/diasNoMes)*diasTrab;
+  const mesesAq13=dem.getMonth()+1;
+  const dec13=(!td)?(rem/12)*mesesAq13:0;
+  const mesesFer=meses%12;
+  const ferProp=(!td&&mesesFer>0)?(rem/12)*mesesFer:0;
+  const tercoFerProp=ferProp/3;
+  const ferVenc=fv*(rem+(rem/3));
+  const fgtsTotal=rem*meses*.08;
+  const fgtsMs=rem*.08;
+  const multa=(!td&&!tp)?fgtsTotal*(ta?0.2:0.4):0;
+  const aviso=(!td&&!tp)?( rem/30)*avisoDia:0;
   const rows=[];
   rows.push({l:'Saldo de salário',v:saldo,neg:false});
-  if(temDireito(tipo,'aviso'))rows.push({l:`Aviso prévio indenizado (${diasAviso} dias)`,v:avisoProp,neg:false});
-  if(tipo==='acordo')rows.push({l:'Desconto acordo mútuo — aviso (50%)',v:avisoProp*0.5,neg:true});
-  if(temDireito(tipo,'trezeimos'))rows.push({l:`13º proporcional (${mesesAquisitivos13}/12 avos)`,v:trezeimos,neg:false});
-  if(temDireito(tipo,'ferias')&&mesesFeriasProporcionais>0){rows.push({l:`Férias proporcionais (${mesesFeriasProporcionais}/12 avos)`,v:feriasProporcionais,neg:false});rows.push({l:'1/3 constitucional sobre férias proporcionais',v:tercoFerias,neg:false});}
-  if(fv>0)rows.push({l:`Férias vencidas (${fv} período${fv>1?'s':''}) + 1/3`,v:feriasVencidas,neg:false});
-  rows.push({l:'FGTS do mês',v:fgtsMeses,neg:false});
-  if(tipo==='acordo'){const fa=depositos*0.2;rows.push({l:'Multa FGTS 20% — acordo mútuo',v:fa,neg:false});}
-  else if(temDireito(tipo,'fgts_multa'))rows.push({l:`Multa FGTS 40% (base: ${fmt(depositos)})`,v:fgtsMulta,neg:false});
+  if(aviso>0)rows.push({l:`Aviso prévio indenizado (${avisoDia} dias)`,v:aviso,neg:false});
+  if(ta&&aviso>0)rows.push({l:'Desconto — acordo mútuo (aviso 50%)',v:aviso*0.5,neg:true});
+  if(dec13>0)rows.push({l:`13º proporcional (${mesesAq13}/12 avos)`,v:dec13,neg:false});
+  if(ferProp>0)rows.push({l:`Férias proporcionais (${mesesFer}/12 avos)`,v:ferProp,neg:false});
+  if(tercoFerProp>0)rows.push({l:'1/3 constitucional s/ férias proporcionais',v:tercoFerProp,neg:false});
+  if(fv>0)rows.push({l:`Férias vencidas (${fv} período${fv>1?'s':''}) + 1/3`,v:ferVenc,neg:false});
+  rows.push({l:'FGTS do mês de rescisão',v:fgtsMs,neg:false});
+  if(multa>0)rows.push({l:`Multa FGTS ${ta?20:40}% (base: ${fmt(fgtsTotal)})`,v:multa,neg:false});
   const total=rows.reduce((s,r)=>s+(r.neg?-r.v:r.v),0);
   let html='';
-  for(const r of rows){if(r.v===0&&!r.neg)continue;html+=`<div class="result-row"><span class="row-label">${r.l}</span><span class="row-val${r.neg?' neg':''}">${r.neg?'-':''}${fmt(r.v)}</span></div>`;}
-  html+=`<div class="result-row total"><span class="row-label">Total bruto</span><span class="row-val">${fmt(total)}</span></div>`;
-  document.getElementById('result-rows').innerHTML=html;
-  const inss_val=inss(remuneracao);const ir_val=ir(remuneracao-inss_val);
-  let dedHtml=`<div class="result-row"><span class="row-label">INSS (estimado)</span><span class="row-val neg">-${fmt(inss_val)}</span></div>`;
-  dedHtml+=`<div class="result-row"><span class="row-label">IR retido na fonte (estimado)</span><span class="row-val neg">-${fmt(ir_val)}</span></div>`;
-  dedHtml+=`<div class="result-row total"><span class="row-label">Total líquido estimado</span><span class="row-val">${fmt(total-inss_val-ir_val)}</span></div>`;
-  document.getElementById('ded-rows').innerHTML=dedHtml;
-  document.getElementById('deduction-section').style.display='block';
-  const tipoLabels={sem_justa:'Sem justa causa',pedido:'Pedido de demissão',com_justa:'Com justa causa',acordo:'Acordo (484-A)',indireta:'Rescisão indireta'};
-  document.getElementById('chips').innerHTML=`<span class="chip active">${tipoLabels[tipo]}</span><span class="chip">${meses} meses trabalhados</span><span class="chip">Aviso: ${diasAviso} dias</span><span class="chip">${fmt(remuneracao)}/mês</span>`;
-  window._reportRows=rows;window._reportTotal=total;window._admStr=admStr;window._demStr=demStr;window._tipo=tipoLabels[tipo];window._inss=inss_val;window._ir=ir_val;
+  for(const r of rows){
+    if(r.v===0)continue;
+    html+=`<div class="result-row"><span class="row-label">${r.l}</span><span class="row-val${r.neg?' neg':''}">${r.neg?'— ':' '}${fmt(r.v)}</span></div>`;
+  }
+  html+=`<div class="result-row total-row"><span class="row-label">Total bruto estimado</span><span class="row-val pos-total">${fmt(total)}</span></div>`;
+  box.innerHTML=html;
+  const inssV=inss(rem);
+  const irV=ir(rem-inssV);
+  const dedHtml=`
+    <div class="result-row"><span class="row-label">INSS estimado (tabela progressiva)</span><span class="row-val neg">— ${fmt(inssV)}</span></div>
+    <div class="result-row"><span class="row-label">IR retido estimado</span><span class="row-val neg">— ${fmt(irV)}</span></div>
+    <div class="result-row total-row"><span class="row-label">Total líquido estimado</span><span class="row-val pos-total">${fmt(total-inssV-irV)}</span></div>`;
+  document.getElementById('dedBox').innerHTML=dedHtml;
+  document.getElementById('dedToggle').style.display='block';
+  document.getElementById('calcActions').style.display='flex';
+  document.getElementById('cta-inline').style.display='block';
+  window._calcData={rows,total,adm:admStr,dem:demStr,tipo,rem,inssV,irV,avisoDia,meses};
 }
-function copyResults(){
-  if(!window._reportRows)return;
-  let txt=`RESCISÃO CONTRATUAL\nTipo: ${window._tipo}\nAdmissão: ${window._admStr} | Demissão: ${window._demStr}\n${'─'.repeat(42)}\n`;
-  for(const r of window._reportRows){if(r.v===0)continue;txt+=`${r.l.padEnd(36)} ${r.neg?'-':''}${fmt(r.v)}\n`;}
-  txt+=`${'─'.repeat(42)}\nTOTAL BRUTO:                         ${fmt(window._reportTotal)}\nINSS estimado:                       -${fmt(window._inss)}\nIR estimado:                         -${fmt(window._ir)}\nTOTAL LÍQUIDO estimado:              ${fmt(window._reportTotal-window._inss-window._ir)}\n`;
-  navigator.clipboard.writeText(txt).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copiar relatório';btn.classList.remove('copied')},2000);});
+['admissao','demissao','tipo','salario','adicionais','horas_extras','ferias_vencidas'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',renderResult);
+  document.getElementById(id).addEventListener('change',renderResult);
+});
+function copyReport(){
+  if(!window._calcData.rows)return;
+  const{rows,total,adm,dem,tipo,rem,inssV,irV,avisoDia,meses}=window._calcData;
+  const tipoLabels={sem_justa:'Sem justa causa',pedido:'Pedido de demissão',com_justa:'Com justa causa',acordo:'Acordo mútuo (art. 484-A)',indireta:'Rescisão indireta'};
+  let txt='VERBAS RESCISÓRIAS — CÁLCULO ESTIMATIVO\n';
+  txt+='Gerado por: Super Inteligênc[IA] — superinteligencia.org\n';
+  txt+='━'.repeat(44)+'\n';
+  txt+=`Tipo: ${tipoLabels[tipo]}\n`;
+  txt+=`Admissão: ${adm} | Demissão: ${dem}\n`;
+  txt+=`Tempo de serviço: ${meses} meses | Aviso: ${avisoDia} dias\n`;
+  txt+=`Remuneração base: ${fmt(rem)}/mês\n`;
+  txt+='━'.repeat(44)+'\n';
+  for(const r of rows){
+    if(r.v===0)continue;
+    const label=r.l.padEnd(36);
+    txt+=`${label}${r.neg?'-':''}${fmt(r.v)}\n`;
+  }
+  txt+='━'.repeat(44)+'\n';
+  txt+=`TOTAL BRUTO:${' '.repeat(24)}${fmt(total)}\n`;
+  txt+=`INSS estimado:${' '.repeat(22)}-${fmt(inssV)}\n`;
+  txt+=`IR estimado:${' '.repeat(24)}-${fmt(irV)}\n`;
+  txt+=`TOTAL LÍQUIDO estimado:${' '.repeat(13)}${fmt(total-inssV-irV)}\n`;
+  txt+='━'.repeat(44)+'\n';
+  txt+='* Cálculo estimativo. Consulte um advogado trabalhista.\n';
+  txt+='* Fale conosco: wa.me/message/NSPS5ULND5FNP1\n';
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    const orig=btn.innerHTML;
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copiado!';
+    btn.style.color='var(--c-green)';btn.style.borderColor='rgba(94,234,212,.4)';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.color='';btn.style.borderColor='';},2000);
+  });
 }
-['admissao','demissao','tipo','salario','adicionais','horas_extras','ferias_vencidas'].forEach(id=>{document.getElementById(id).addEventListener('input',calc);document.getElementById(id).addEventListener('change',calc);});
-const today=new Date();const y=today.getFullYear(),m=String(today.getMonth()+1).padStart(2,'0'),d=String(today.getDate()).padStart(2,'0');
+// Init dates
+const today=new Date();
+const y=today.getFullYear(),m=String(today.getMonth()+1).padStart(2,'0'),d=String(today.getDate()).padStart(2,'0');
 document.getElementById('demissao').value=`${y}-${m}-${d}`;
 document.getElementById('admissao').value=`${y-2}-${m}-${d}`;
-calc();
+document.getElementById('salario').value='3000';
+renderResult();
+
+// EXIT INTENT
+(function(){
+  let fired=false;
+  const popup=document.getElementById('exitPopup');
+  const closeBtn=document.getElementById('exitClose');
+  if(!popup||!closeBtn)return;
+  function show(){if(fired)return;fired=true;popup.classList.add('active')}
+  function hide(){popup.classList.remove('active')}
+  document.addEventListener('mouseout',e=>{if(e.clientY<5&&e.relatedTarget===null)show()});
+  let lastY=0,lastT=0;
+  window.addEventListener('scroll',()=>{
+    const y=window.scrollY,t=Date.now();
+    if(lastT&&y<lastY&&(lastY-y)>80&&(t-lastT)<300&&y>400)show();
+    lastY=y;lastT=t;
+  },{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&window.scrollY>400)show()});
+  closeBtn.addEventListener('click',hide);
+  popup.addEventListener('click',e=>{if(e.target===popup)hide()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()});
+})();
 </script>
 </body>
 </html>
